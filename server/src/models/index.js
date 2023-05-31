@@ -47,4 +47,48 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+const user = require("./user");
+const stok = require("./stok");
+const historiStok = require("./historistok");
+const produk = require("./produk");
+const transaksi = require("./transaksi");
+const transaksiDetail = require("./transaksiDetail");
+const categori = require("./categori");
+
+db.User = user(sequelize, Sequelize);
+db.Stok = stok(sequelize, Sequelize);
+db.HistoriStok = historiStok(sequelize, Sequelize);
+db.Produk = produk(sequelize, Sequelize);
+db.Transaksi = transaksi(sequelize, Sequelize);
+db.TransaksiDetail = transaksiDetail(sequelize, Sequelize);
+db.Categori = categori(sequelize, Sequelize);
+
+db.Transaksi.belongsTo(db.User, {
+	foreignKey: "user_id",
+	as: "User",
+});
+
+db.TransaksiDetail.belongsTo(db.Transaksi, {
+	foreignKey: "transaksi_id",
+	as: "Transaksi",
+});
+
+db.TransaksiDetail.belongsTo(db.Produk, {
+	foreignKey: "produk_id",
+	as: "Produk",
+});
+
+db.Produk.belongsTo(db.Categori, {
+	foreignKey: "categori_id",
+	as: "Categori",
+});
+db.Stok.belongsTo(db.Produk, {
+	foreignKey: "product_id",
+	as: "Produk",
+});
+db.HistoriStok.belongsTo(db.Produk, {
+	foreignKey: "produk_id",
+	as: "Produk",
+});
+
 module.exports = db;
