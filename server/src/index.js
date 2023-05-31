@@ -4,12 +4,18 @@ const dotenv = require("dotenv");
 dotenv.config();
 const cors = require("cors");
 const PORT = process.env.PORT;
-app.use(cors());
-app.use(express.json());
 const db = require("./models");
+const routes = require("./routes");
 
 // db.sequelize.sync({ alter: true });
 
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req, res) => res.send("test"));
+
+app.use("/users", routes.userRoutes);
+
 app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+  console.log(`server is running on PORT: ${PORT}`);
 });
