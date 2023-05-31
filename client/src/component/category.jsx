@@ -48,6 +48,25 @@ export default function Category() {
   );
 }
 
-// function Card() {
+function Card(props) {
+    return (
+        <Flex w={"100%"} flexDir={"row"}>
+          <Center w={49} h={36} bgColor={"#FEE4E2"}>
+            No
+          </Center>
+          <Center w={399} h={36} bgColor={"#FECDCA"}>
+            {props.name}
+          </Center>
+          <Center w={278} h={36} bgColor={"#FEE4E2"}>
+            {props.}
+          </Center>
+          <Center w={261} h={36} bgColor={"#FEE4E2"}>
+            Status
+          </Center>
+          <Center w={125} h={36} bgColor={"#FEE4E2"}>
+            {" "}
+          </Center>
+        </Flex>
+    )
 
-// }
+}
