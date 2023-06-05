@@ -1,8 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
   const Categori = sequelize.define("Categoris", {
     NamaCategori: Sequelize.STRING,
-    TotalProduct: Sequelize.INTEGER,
-    Status: Sequelize.ENUM("AVAILABLE", "NOT-AVAILABLE"),
+    TotalProduct: Sequelize.STRING,
+    Status: Sequelize.ENUM("AVAILABLE", "UNAVAILABLE"),
   });
   return Categori;
 };

@@ -16,7 +16,8 @@ app.get("/", (req, res) => res.send("test"));
 
 app.use("/users", routes.userRoutes);
 app.use("/product", routes.productRoutes);
+app.use("/categori", routes.categoriRoutes);
 
 app.listen(PORT, () => {
-	console.log(`server is running on PORT: ${PORT}`);
+  console.log(`server is running on PORT: ${PORT}`);
 });
