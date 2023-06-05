@@ -72,6 +72,49 @@ const productController = {
 			});
 		}
 	},
+	getFilter: async (req, res) => {
+		try {
+			const filters = req.query;
+			const filter = await db.Product.findAll({
+				where: filters,
+			});
+			res.json(filter);
+		} catch (error) {
+			res.status(500).send({
+				message: error.message,
+			});
+		}
+	},
+	getSorting: async (req, res) => {
+		try {
+			const { sortBy, sortOrder } = req.query;
+			console.log(req.query);
+			const sortedData = await db.Product.findAll({
+				order: [[sortBy, sortOrder]],
+			});
+			res.json(sortedData);
+		} catch (error) {
+			console.log(error.message);
+			res.status(500).send({
+				message: error.message,
+			});
+		}
+	},
+	getPagnation: async (req, res) => {
+		const { page, limit } = req.query;
+		const offset = (page - 1) * limit;
+
+		try {
+			const posts = await db.Product.findAll({
+				offset,
+				limit: +limit,
+			});
+			res.json(posts);
+		} catch (error) {
+			console.error("Error retrieving users:", error);
+			res.status(500).json({ message: "Internal server error" });
+		}
+	},
 };
 
 module.exports = productController;
