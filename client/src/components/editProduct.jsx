@@ -28,6 +28,7 @@ export function EditProduct(props) {
     price: "",
     category_id: "",
   });
+  const [image, setImage] = useState(iconphoto);
 
   const inputHandler = (e) => {
     const { id, value } = e.target;
@@ -81,11 +82,18 @@ export function EditProduct(props) {
   const handleFile = (event) => {
     setSelectedFile(event.target.files[0]);
     console.log(event.target.files[0]);
+    setImage(URL.createObjectURL(event.target.files[0]));
   };
 
   return (
     <>
-      <Modal isOpen={props.isOpen} onClose={props.onClose}>
+      <Modal
+        isOpen={props.isOpen}
+        onClose={() => {
+          setImage(iconphoto);
+          props.onClose();
+        }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Product</ModalHeader>
@@ -101,7 +109,7 @@ export function EditProduct(props) {
                 // id="product_url"
               />
               <Image
-                src={iconphoto}
+                src={image}
                 w={"100px"}
                 h={"100px"}
                 onClick={() => {
