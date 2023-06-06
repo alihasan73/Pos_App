@@ -29,6 +29,7 @@ export function CreateProduct(props) {
     price: "",
     category_id: "",
   });
+  const [image, setImage] = useState(iconphoto);
 
   //input
   const inputHandler = (e) => {
@@ -42,9 +43,10 @@ export function CreateProduct(props) {
   //get daftar category
   useEffect(() => {
     async function getCategory() {
-      const res = await api.get("/category");
-      console.log(res.data);
-      setCategory(res.data);
+      const response = await api.get("/categories");
+      // console.log(res.data);
+      const { category } = response.data;
+      setCategory(category);
     }
     getCategory();
   }, []);
@@ -83,6 +85,7 @@ export function CreateProduct(props) {
   const handleFile = (event) => {
     setSelectedFile(event.target.files[0]);
     console.log(event.target.files[0]);
+    setImage(URL.createObjectURL(event.target.files[0]));
   };
 
   return (
@@ -103,7 +106,7 @@ export function CreateProduct(props) {
                 // id="product_url"
               />
               <Image
-                src={iconphoto}
+                src={image}
                 w={"100px"}
                 h={"100px"}
                 onClick={() => {
@@ -142,8 +145,10 @@ export function CreateProduct(props) {
         </Button> */}
 
             <Button
-              bg={"red"}
+              bg={"#B42318"}
+              color={"white"}
               variant="ghost"
+              _hover={{ color: "black", bg: "#EEF2F6" }}
               onClick={() => {
                 newProduct();
               }}

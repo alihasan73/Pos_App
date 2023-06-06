@@ -1,4 +1,12 @@
-import { Box, Button, Center, Flex, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Center,
+  Flex,
+  IconButton,
+  Image,
+} from "@chakra-ui/react";
 import logo from "../assets/logo PIZZA PIZZAZZ.png";
 import { RxDashboard } from "react-icons/rx";
 import { MdOutlineFastfood, MdOutlineInventory2 } from "react-icons/md";
@@ -9,7 +17,10 @@ import {
 } from "react-icons/ai";
 import { HiOutlineDocumentReport } from "react-icons/hi";
 import { RiUserSettingsLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 export default function SidebarAdmin() {
+  const dispatch = useDispatch();
   return (
     <>
       <Flex
@@ -29,107 +40,160 @@ export default function SidebarAdmin() {
 
         <Flex flexDir={"column"} gap={5} p={3}>
           <Box fontWeight={"bold"}>manage</Box>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            bg={"#E3E8EF"}
-          >
-            <RxDashboard />
-            Dashboard
-          </Flex>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            bg={"#E3E8EF"}
-          >
-            <MdOutlineFastfood />
-            Product
-          </Flex>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            bg={"#E3E8EF"}
-          >
-            <AiOutlineFolderOpen />
-            Categories
-          </Flex>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            bg={"#E3E8EF"}
-          >
-            <MdOutlineInventory2 />
-            Inventory
-          </Flex>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            bg={"#E3E8EF"}
-          >
-            <HiOutlineDocumentReport />
-            Report
-          </Flex>
+
+          <Link to="/dashboardAdmin">
+            <ButtonGroup isAttached variant="outline" w={"100%"}>
+              <IconButton icon={<RxDashboard />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+              >
+                Dashboard
+              </Button>
+            </ButtonGroup>
+          </Link>
+
+          <Link to="/products">
+            <ButtonGroup isAttached variant="outline" w={"100%"}>
+              <IconButton icon={<MdOutlineFastfood />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+              >
+                Product
+              </Button>
+            </ButtonGroup>
+          </Link>
+
+          <Link to="/categories">
+            <ButtonGroup isAttached variant="outline" w={"100%"}>
+              <IconButton icon={<AiOutlineFolderOpen />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+              >
+                Categories
+              </Button>
+            </ButtonGroup>
+          </Link>
+
+          <Link to="">
+            <ButtonGroup isAttached variant="outline" w={"100%"}>
+              <IconButton icon={<MdOutlineInventory2 />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+              >
+                Inventory
+              </Button>
+            </ButtonGroup>
+          </Link>
+
+          <Link to="">
+            <ButtonGroup isAttached variant="outline" w={"100%"}>
+              <IconButton icon={<HiOutlineDocumentReport />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+              >
+                Report
+              </Button>
+            </ButtonGroup>
+          </Link>
         </Flex>
 
         <Flex flexDir={"column"} gap={5} p={3}>
           <Box fontWeight={"bold"}>Preference</Box>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            bg={"#E3E8EF"}
-          >
-            <RiUserSettingsLine />
-            Admin Settings
-          </Flex>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            bg={"#E3E8EF"}
-          >
-            <AiOutlineSetting />
-            General
-          </Flex>
-          <Flex
-            alignItems={"center"}
-            gap={2}
-            p={2}
-            borderRadius={5}
-            _hover={{ bg: "#B42318", color: "white" }}
-            cursor={"pointer"}
-            mt={"50px"}
-            bg={"#E3E8EF"}
-          >
-            <AiOutlineLogout />
-            Logout
-          </Flex>
+
+          <Link to="/adminSettings">
+            <ButtonGroup isAttached variant="outline" w={"100%"}>
+              <IconButton icon={<RiUserSettingsLine />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+              >
+                Admin Settings
+              </Button>
+            </ButtonGroup>
+          </Link>
+
+          <Link to="">
+            <ButtonGroup isAttached variant="outline" w={"100%"}>
+              <IconButton icon={<AiOutlineSetting />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+              >
+                General
+              </Button>
+            </ButtonGroup>
+          </Link>
+
+          <Link to="">
+            <ButtonGroup isAttached variant="outline" w={"100%"} mt={"50px"}>
+              <IconButton icon={<AiOutlineLogout />} />
+              <Button
+                w={"100%"}
+                alignItems={"center"}
+                gap={2}
+                p={2}
+                borderRadius={5}
+                _hover={{ bg: "#B42318", color: "white" }}
+                cursor={"pointer"}
+                bg={"#E3E8EF"}
+                onClick={() => {
+                  localStorage.removeItem("user");
+                  dispatch({
+                    type: "logout",
+                  });
+                }}
+              >
+                Logout
+              </Button>
+            </ButtonGroup>
+          </Link>
         </Flex>
       </Flex>
     </>

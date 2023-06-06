@@ -15,8 +15,11 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("test"));
 
 app.use("/users", routes.userRoutes);
-app.use("/product", routes.productRoutes);
+app.use("/products", routes.productRoutes);
+app.use("/categories", routes.categoryRoutes);
+app.use("/imageProduct", express.static(`${__dirname}/public/product`));
+app.use("/avatarUser", express.static(`${__dirname}/public/avatar`));
 
 app.listen(PORT, () => {
-	console.log(`server is running on PORT: ${PORT}`);
+  console.log(`server is running on PORT: ${PORT}`);
 });
