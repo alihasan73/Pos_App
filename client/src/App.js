@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes } from "react-router-dom";
 import routes from "./routes/routes";
 import { Box } from "@chakra-ui/react";
+import Loading from "./components/loading";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,17 +10,11 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 1400);
   }, [isLoading]);
 
   return (
-    <>
-      {isLoading ? (
-        <Box>asasf</Box>
-      ) : (
-        <Routes>{routes.map((val) => val)}</Routes>
-      )}
-    </>
+    <>{isLoading ? <Loading /> : <Routes>{routes.map((val) => val)}</Routes>}</>
   );
 }
 

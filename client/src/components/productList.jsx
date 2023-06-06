@@ -16,6 +16,11 @@ import { DeleteProduct } from "./deleteProduct";
 export default function ProductList({ products }) {
   const [editProductId, setEditProductId] = useState(null);
   const [deleteProductId, setDeleteProductId] = useState(null);
+  const [name, setName] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [category_id, setCategory_id] = useState(null);
+  const [product_url, setProduct_url] = useState(null);
 
   const modalEdit = useDisclosure();
   const modalDelete = useDisclosure();
@@ -51,6 +56,11 @@ export default function ProductList({ products }) {
                     variant="ghost"
                     onClick={() => {
                       setEditProductId(val.id);
+                      setName(val.name);
+                      setPrice(val.price);
+                      setDescription(val.description);
+                      setCategory_id(val.category_id);
+                      setProduct_url(val.product_url);
                       modalEdit.onOpen();
                     }}
                   >
@@ -59,11 +69,17 @@ export default function ProductList({ products }) {
                       id={editProductId}
                       isOpen={modalEdit.isOpen}
                       onClose={modalEdit.onClose}
+                      name={name}
+                      price={price}
+                      description={description}
+                      category_id={category_id}
+                      product_url={product_url}
                     />
                   </Button>
                   <Button
                     onClick={() => {
                       setDeleteProductId(val.id);
+
                       modalDelete.onOpen();
                     }}
                     aria-label="Delete"

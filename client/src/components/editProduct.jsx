@@ -19,6 +19,7 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "../api/api";
 
 export function EditProduct(props) {
+  // console.log(props);
   const [category, setCategory] = useState([]);
   const [SelectedFile, setSelectedFile] = useState(null);
   const inputFileRef = useRef(null);
@@ -41,9 +42,10 @@ export function EditProduct(props) {
   //get daftar category
   useEffect(() => {
     async function getCategory() {
-      const res = await api.get("/category");
-      console.log(res.data);
-      setCategory(res.data);
+      const response = await api.get("/categories");
+      // console.log(res.data);
+      const { category } = response.data;
+      setCategory(category);
     }
     getCategory();
   }, []);
@@ -69,7 +71,7 @@ export function EditProduct(props) {
       formData.append("price", product.price);
       formData.append("category_id", product.category_id);
 
-      api.patch("/products/" + props.id, formData);
+      await api.patch("/products/" + props.id, formData);
 
       alert("berhasil mengubah produk");
       props.onClose();
@@ -109,7 +111,7 @@ export function EditProduct(props) {
                 // id="product_url"
               />
               <Image
-                src={image}
+                src={!SelectedFile ? props.product_url : image}
                 w={"100px"}
                 h={"100px"}
                 onClick={() => {
@@ -118,18 +120,30 @@ export function EditProduct(props) {
               />
               <Flex flexDir={"column"} w={"70%"}>
                 Product Name
-                <Input id="name" onChange={inputHandler} />
+                <Input
+                  id="name"
+                  placeholder={props.name}
+                  onChange={inputHandler}
+                />
                 Price
-                <Input id="price" onChange={inputHandler} />
+                <Input
+                  id="price"
+                  placeholder={props.price}
+                  onChange={inputHandler}
+                />
               </Flex>
             </Flex>
             <Box>
               Description
-              <Input id="description" onChange={inputHandler} />
+              <Input
+                id="description"
+                placeholder={props.description}
+                onChange={inputHandler}
+              />
             </Box>
             <Box pt={5}>
               <Select
-                placeholder="Pilih category.."
+                placeholder={props.category_id}
                 id="category_id"
                 onChange={inputHandler}
               >
