@@ -1,5 +1,6 @@
 const db = require("../models");
 const moment = require("moment");
+const image_prod_url = process.env.IMAGE_PROD_URL;
 
 const productController = {
 	getAll: async (req, res) => {
@@ -13,13 +14,30 @@ const productController = {
 			});
 		}
 	},
+	getOne: async (req, res) => {
+		try {
+			const { product_id } = req.query;
+			const result = await db.Product.findOne({
+				where: {
+					id: product_id,
+				},
+			});
+			return res.send(result);
+		} catch (error) {
+			res.status(500).send({
+				message: error.message,
+			});
+		}
+	},
 	postProduct: async (req, res) => {
 		try {
 			const { name, description, price } = req.body;
+			const { filename } = req.file;
 			const newProduct = await db.Product.create({
 				name,
 				price,
 				description,
+				product_url: image_prod_url + filename,
 			});
 			res.send({
 				message: "Produl berhasil ditambah",
@@ -33,17 +51,20 @@ const productController = {
 	},
 	updateProduct: async (req, res) => {
 		try {
-			const { productId } = req.params;
+			// console.log(req.body);
+			const { id } = req.params;
 			const { name, description, price } = req.body;
+			const { filename } = req.file;
+			console.log(filename);
 			const product = await db.Product.findOne({
 				where: {
-					id: productId,
+					id: id,
 				},
 			});
-
 			product.name = name;
 			product.description = description;
 			product.price = price;
+			product.product_url = image_prod_url + filename;
 
 			await product.save();
 			return res.status(200).send({

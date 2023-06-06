@@ -16,6 +16,7 @@ app.get("/", (req, res) => res.send("test"));
 
 app.use("/users", routes.userRoutes);
 app.use("/product", routes.productRoutes);
+app.use("/product", express.static(`${__dirname}/public/product`));
 
 app.listen(PORT, () => {
 	console.log(`server is running on PORT: ${PORT}`);
