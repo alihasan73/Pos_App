@@ -22,7 +22,13 @@ export function EditProduct(props) {
 	const [category, setCategory] = useState([]);
 	const [SelectedFile, setSelectedFile] = useState(null);
 	const inputFileRef = useRef(null);
-	const [product, setProduct] = useState({});
+	const [product, setProduct] = useState({
+		name: "",
+		description: "",
+		price: "",
+		category_id: "",
+	});
+	const [image, setImage] = useState(iconphoto);
 
 	async function fetchData() {
 		const result = await api.get(`/product/detail?product_id=${props.id}`);
@@ -62,14 +68,26 @@ export function EditProduct(props) {
 		}
 	};
 
+	// const handleFile = (event) => {
+	// 	setSelectedFile(event.target.files[0]);
+	// 	console.log(event.target.files[0]);
+	// };
+
 	const handleFile = (event) => {
 		setSelectedFile(event.target.files[0]);
 		console.log(event.target.files[0]);
+		setImage(URL.createObjectURL(event.target.files[0]));
 	};
 
 	return (
 		<>
-			<Modal isOpen={props.isOpen} onClose={props.onClose}>
+			<Modal
+				isOpen={props.isOpen}
+				onClose={() => {
+					setImage(iconphoto);
+					props.onClose();
+				}}
+			>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>Edit Product</ModalHeader>
@@ -85,34 +103,25 @@ export function EditProduct(props) {
 								// id="product_url"
 							/>
 							<Image
-								// src={iconphoto}
+								src={image}
 								w={"100px"}
 								h={"100px"}
 								onClick={() => {
 									inputFileRef.current.click();
 								}}
-								value={product.product_url}
 							/>
 							<Flex flexDir={"column"} w={"70%"}>
 								Product Name
-								<Input id="name" onChange={inputHandler} value={product.name} />
+								<Input id="name" onChange={inputHandler} />
 								Price
-								<Input
-									id="price"
-									onChange={inputHandler}
-									value={product.price}
-								/>
+								<Input id="price" onChange={inputHandler} />
 							</Flex>
 						</Flex>
 						<Box>
 							Description
-							<Input
-								id="description"
-								onChange={inputHandler}
-								value={product.description}
-							/>
+							<Input id="description" onChange={inputHandler} />
 						</Box>
-						{/* <Box pt={5}>
+						<Box pt={5}>
 							<Select
 								placeholder="Pilih category.."
 								id="category_id"
@@ -124,7 +133,7 @@ export function EditProduct(props) {
 									</option>
 								))}
 							</Select>
-						</Box> */}
+						</Box>
 					</ModalBody>
 
 					<ModalFooter>
