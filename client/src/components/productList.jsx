@@ -12,16 +12,33 @@ import { useEffect, useState } from "react";
 import { api } from "../api/api";
 import { EditProduct } from "./editProduct";
 import { DeleteProduct } from "./deleteProduct";
-import { CreateProduct } from "./createProduct";
 
-export default function ProductList({ products }) {
+export default function ProductList(props) {
+	const { products, fetchProduct } = props;
+	const rupiah = (number) => {
+		return new Intl.NumberFormat("id-ID", {
+			style: "currency",
+			currency: "IDR",
+		}).format(number);
+	};
 	const [editProductId, setEditProductId] = useState(null);
 	const [deleteProductId, setDeleteProductId] = useState(null);
+	const [name, setName] = useState(null);
+	const [price, setPrice] = useState(null);
+	const [description, setDescription] = useState(null);
+	const [category_id, setCategory_id] = useState(null);
+	const [product_url, setProduct_url] = useState(null);
 
+	console.log(products);
+	// console.log(handleDataChange);
+	// console.log(handleDataChange);
 	const modalEdit = useDisclosure();
 	const modalDelete = useDisclosure();
 
-	console.log(products);
+	// useEffect(() => {
+	// 	handleDataChange;
+	// }, []);
+
 	return (
 		<>
 			<Table variant="simple">
@@ -42,12 +59,9 @@ export default function ProductList({ products }) {
 							<Td>
 								<Image src={val.product_url} w={"100px"} h={"70px"} />
 							</Td>
-							<Td>
-								{val.name}
-								{val.description}
-							</Td>
+							<Td>{val.name}</Td>
 							<Td>{val.Category.name}</Td>
-							<Td>{val.price}</Td>
+							<Td>{rupiah(val.price)}</Td>
 							<Td>
 								<Flex justifyContent={"space-between"}>
 									<Button
@@ -56,6 +70,11 @@ export default function ProductList({ products }) {
 										variant="ghost"
 										onClick={() => {
 											setEditProductId(val.id);
+											setName(val.name);
+											setPrice(val.price);
+											setDescription(val.description);
+											setCategory_id(val.category_id);
+											setProduct_url(val.product_url);
 											modalEdit.onOpen();
 										}}
 									>
@@ -64,11 +83,18 @@ export default function ProductList({ products }) {
 											id={editProductId}
 											isOpen={modalEdit.isOpen}
 											onClose={modalEdit.onClose}
+											name={name}
+											price={price}
+											description={description}
+											category_id={category_id}
+											product_url={product_url}
+											fetchProduct={fetchProduct}
 										/>
 									</Button>
 									<Button
 										onClick={() => {
 											setDeleteProductId(val.id);
+
 											modalDelete.onOpen();
 										}}
 										aria-label="Delete"
@@ -80,6 +106,8 @@ export default function ProductList({ products }) {
 											id={deleteProductId}
 											isOpen={modalDelete.isOpen}
 											onClose={modalDelete.onClose}
+											// handleDataChange={handleDataChange}
+											fetchProduct={fetchProduct}
 										/>
 									</Button>
 								</Flex>

@@ -79,7 +79,7 @@ export default function LoginPage() {
               duration: 1000,
               isClosable: true,
             });
-            return nav("/admin");
+            return nav("/DashboardAdmin");
           } else {
             toast({
               title: "success login",

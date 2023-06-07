@@ -12,26 +12,13 @@ import {
 	Flex,
 } from "@chakra-ui/react";
 import { api } from "../api/api";
-import { useEffect, useState } from "react";
 
 export function DeleteProduct(props) {
-	const [product, setProduct] = useState({});
-
-	async function fetchData() {
-		const result = await api.get(`/product/detail?product_id=${props.id}`);
-		console.log(result);
-		setProduct(result.data);
-	}
-	// console.log(product);
-
-	useEffect(() => {
-		fetchData();
-	}, [props.isOpen]);
 	const deleteProduct = async () => {
-		await api.delete("/product/" + props.id);
+		await api.delete("/products/" + props.id);
 		alert("deleted");
+		props.fetchProduct();
 		props.onClose();
-		props.handleChange();
 	};
 
 	return (
@@ -42,7 +29,7 @@ export function DeleteProduct(props) {
 					<ModalHeader>Konfirmasi Hapus Data </ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						Apakah anda yakin akan menghapus data {product.name}?
+						Apakah anda yakin akan menghapus data dengan id {props.id}?
 					</ModalBody>
 					<ModalFooter gap={5}>
 						<Button onClick={props.onClose}>Cancel</Button>

@@ -14,7 +14,7 @@ import {
 	Input,
 	Select,
 } from "@chakra-ui/react";
-// import iconphoto from "../assets/icon.png";
+import iconphoto from "../assets/icon.png";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../api/api";
 
@@ -27,16 +27,10 @@ export function CreateProduct(props) {
 		name: "",
 		description: "",
 		price: "",
+		category_id: "",
 	});
+	const [image, setImage] = useState(iconphoto);
 
-	// async function fetchProduct() {
-	// 	try {
-	// 		const response = await api.get("/product/");
-	// 		setProducts(response.data);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// }
 	//input
 	const inputHandler = (e) => {
 		const { id, value } = e.target;
@@ -46,11 +40,28 @@ export function CreateProduct(props) {
 		setProduct(tempProduct);
 	};
 
+	//get daftar category
+	useEffect(() => {
+		async function getCategory() {
+			const response = await api.get("/categories");
+			// console.log(res.data);
+			const { category } = response.data;
+			setCategory(category);
+		}
+		getCategory();
+	}, []);
+
 	// function new product
 	const newProduct = async () => {
 		try {
 			if (
-				!(product.name && product.description && product.price && SelectedFile)
+				!(
+					product.name &&
+					product.description &&
+					product.price &&
+					product.category_id &&
+					SelectedFile
+				)
 			) {
 				alert("isi semua");
 			} else {
@@ -59,10 +70,12 @@ export function CreateProduct(props) {
 				formData.append("name", product.name);
 				formData.append("description", product.description);
 				formData.append("price", product.price);
+				formData.append("category_id", product.category_id);
 
-				await api.post("/product/", formData);
+				await api.post("/products/newProduct", formData);
 
 				alert("berhasil menambahkan produk");
+				props.fetchProduct();
 				props.onClose();
 			}
 		} catch (err) {
@@ -73,6 +86,7 @@ export function CreateProduct(props) {
 	const handleFile = (event) => {
 		setSelectedFile(event.target.files[0]);
 		console.log(event.target.files[0]);
+		setImage(URL.createObjectURL(event.target.files[0]));
 	};
 
 	return (
@@ -93,7 +107,7 @@ export function CreateProduct(props) {
 								// id="product_url"
 							/>
 							<Image
-								// src={iconphoto}
+								src={image}
 								w={"100px"}
 								h={"100px"}
 								onClick={() => {
@@ -111,7 +125,7 @@ export function CreateProduct(props) {
 							Description
 							<Input id="description" onChange={inputHandler} />
 						</Box>
-						{/* <Box pt={5}>
+						<Box pt={5}>
 							<Select
 								placeholder="Pilih category.."
 								id="category_id"
@@ -123,7 +137,7 @@ export function CreateProduct(props) {
 									</option>
 								))}
 							</Select>
-						</Box> */}
+						</Box>
 					</ModalBody>
 
 					<ModalFooter>
@@ -132,8 +146,10 @@ export function CreateProduct(props) {
         </Button> */}
 
 						<Button
-							bg={"red"}
+							bg={"#B42318"}
+							color={"white"}
 							variant="ghost"
+							_hover={{ color: "black", bg: "#EEF2F6" }}
 							onClick={() => {
 								newProduct();
 							}}

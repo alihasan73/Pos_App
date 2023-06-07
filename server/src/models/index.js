@@ -49,11 +49,15 @@ db.Sequelize = Sequelize;
 
 db.User = require("./user")(sequelize, Sequelize);
 db.Token = require("./token")(sequelize, Sequelize);
-db.Product = require("./produk")(sequelize, Sequelize);
-db.Stok = require("./stok")(sequelize, Sequelize);
-db.HistoriStok = require("./historistok")(sequelize, Sequelize);
-db.Transaksi = require("./transaksi")(sequelize, Sequelize);
-db.TransaksiDetail = require("./transaksiDetail")(sequelize, Sequelize);
-db.Categori = require("./categori")(sequelize, Sequelize);
+db.Category = require("./category")(sequelize, Sequelize);
+db.HistoryStock = require("./historyStock")(sequelize, Sequelize);
+db.Product = require("./product")(sequelize, Sequelize);
+db.Stock = require("./stock")(sequelize, Sequelize);
+db.Transaction = require("./transaction")(sequelize, Sequelize);
+db.TransactionDetail = require("./transactionDetail")(sequelize, Sequelize);
+
+db.Product.belongsTo(db.Category, {
+	foreignKey: "category_id",
+});
 
 module.exports = db;

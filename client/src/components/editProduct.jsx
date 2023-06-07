@@ -14,7 +14,7 @@ import {
 	Input,
 	Select,
 } from "@chakra-ui/react";
-// import iconphoto from "../assets/icon.png";
+import iconphoto from "../assets/icon.png";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../api/api";
 
@@ -22,24 +22,25 @@ export function EditProduct(props) {
 	const [category, setCategory] = useState([]);
 	const [SelectedFile, setSelectedFile] = useState(null);
 	const inputFileRef = useRef(null);
-	const [product, setProduct] = useState({
-		name: "",
-		description: "",
-		price: "",
-		category_id: "",
-	});
+	// const [product, setProduct] = useState({
+	// 	name: "",
+	// 	description: "",
+	// 	price: "",
+	// 	category_id: "",
+	// });
+	const [product, setProduct] = useState({});
 	const [image, setImage] = useState(iconphoto);
 
-	async function fetchData() {
-		const result = await api.get(`/product/detail?product_id=${props.id}`);
-		console.log(result);
+	const getData = async () => {
+		const result = await api.get(`/products/${props.id}`);
+		console.log(result.data);
 		setProduct(result.data);
-	}
-	console.log(product);
+	};
 
 	useEffect(() => {
-		fetchData();
+		getData();
 	}, [props.isOpen]);
+	// console.log(product.name);
 	const inputHandler = (e) => {
 		const { id, value } = e.target;
 		const tempProduct = { ...product };
@@ -47,9 +48,28 @@ export function EditProduct(props) {
 		console.log(tempProduct);
 		setProduct(tempProduct);
 	};
+
+	//get daftar category
+	useEffect(() => {
+		async function getCategory() {
+			const response = await api.get("/categories");
+			const { category } = response.data;
+			setCategory(category);
+		}
+		getCategory();
+	}, []);
+
+	//
 	const editProduct = async () => {
+		// try {
 		if (
-			!(product.name && product.description && product.price && SelectedFile)
+			!(
+				product.name &&
+				product.description &&
+				product.price &&
+				product.category_id &&
+				SelectedFile
+			)
 		) {
 			alert("isi semua");
 		} else {
@@ -58,20 +78,15 @@ export function EditProduct(props) {
 			formData.append("name", product.name);
 			formData.append("description", product.description);
 			formData.append("price", product.price);
+			formData.append("category_id", product.category_id);
 
-			console.log(formData);
-			const res = await api.patch(`/product/${props.id}`, formData);
+			await api.patch("/products/" + props.id, formData);
 
 			alert("berhasil mengubah produk");
-			props.handleChange();
+			props.fetchProduct();
 			props.onClose();
 		}
 	};
-
-	// const handleFile = (event) => {
-	// 	setSelectedFile(event.target.files[0]);
-	// 	console.log(event.target.files[0]);
-	// };
 
 	const handleFile = (event) => {
 		setSelectedFile(event.target.files[0]);
@@ -103,7 +118,7 @@ export function EditProduct(props) {
 								// id="product_url"
 							/>
 							<Image
-								src={image}
+								src={!SelectedFile ? props.product_url : image}
 								w={"100px"}
 								h={"100px"}
 								onClick={() => {
@@ -112,18 +127,34 @@ export function EditProduct(props) {
 							/>
 							<Flex flexDir={"column"} w={"70%"}>
 								Product Name
-								<Input id="name" onChange={inputHandler} />
+								<Input
+									id="name"
+									// placeholder={props.name}
+									value={product.name}
+									onChange={inputHandler}
+								/>
 								Price
-								<Input id="price" onChange={inputHandler} />
+								<Input
+									id="price"
+									// placeholder={props.price}
+									value={product.price}
+									onChange={inputHandler}
+								/>
 							</Flex>
 						</Flex>
 						<Box>
 							Description
-							<Input id="description" onChange={inputHandler} />
+							<Input
+								id="description"
+								// placeholder={props.description}
+								value={product.description}
+								onChange={inputHandler}
+							/>
 						</Box>
 						<Box pt={5}>
 							<Select
-								placeholder="Pilih category.."
+								// placeholder={props.category_id}
+								value={product.category_id}
 								id="category_id"
 								onChange={inputHandler}
 							>

@@ -2,7 +2,6 @@ const express = require("express");
 const { fileUploader } = require("../middlewares/multer");
 const router = express.Router();
 const productController = require("../controllers").productController;
-const { fileUploader } = require("../middleware/multer");
 
 //get all product
 router.get("/", productController.getAllProduct);
@@ -28,8 +27,8 @@ router.post(
 
 //delete product
 router.delete("/:id", productController.deleteProduct);
-router.get("/filter", productController.getFilter);
-router.get("/sort", productController.getSorting);
-router.get("/paginate", productController.getPagnation);
-router.get("/detail", productController.getOne);
+
+//detail product
+router.get("/:id", productController.getProductById);
+
 module.exports = router;

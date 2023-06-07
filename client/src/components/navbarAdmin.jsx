@@ -1,6 +1,9 @@
 import { Avatar, Box, Center, Flex, Input } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 export default function NavbarAdmin() {
+  const userSelector = useSelector((state) => state.auth);
+  console.log(userSelector);
   return (
     <>
       <Center position={"fixed"} zIndex={2}>
@@ -28,13 +31,13 @@ export default function NavbarAdmin() {
             </Box>
             <Flex gap={3} alignItems={"center"}>
               <Box flexDir={"column"} fontSize={"sm"}>
-                <Box>fahmi nurkamil</Box>
+                <Box>{userSelector.name}</Box>
                 <Box float={"right"} color={"gray"}>
-                  admin
+                  {userSelector.role}
                 </Box>
               </Box>
               <Box>
-                <Avatar w={"40px"} h={"40px"} />
+                <Avatar src={userSelector.avatar_url} w={"40px"} h={"40px"} />
               </Box>
             </Flex>
           </Flex>

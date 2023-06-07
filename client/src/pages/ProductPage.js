@@ -5,9 +5,6 @@ import {
 	Center,
 	Flex,
 	IconButton,
-	Input,
-	InputGroup,
-	InputLeftElement,
 	TabIndicator,
 	useDisclosure,
 } from "@chakra-ui/react";
@@ -17,14 +14,17 @@ import NavbarAdmin from "../components/navbarAdmin";
 import SidebarAdmin from "../components/sidebarAdmin";
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
-import AllProductList from "../components/productList";
+import ProductList from "../components/productList";
 import { CreateProduct } from "../components/createProduct";
 import { SearchBarProduct } from "../components/SearchBarProduct";
+// import "../css/scroll.css";
 
 export default function ProductPage() {
 	const { isOpen, onClose, onOpen } = useDisclosure();
-	const [totalPorduct, setTotalProduct] = useState([]);
 	const [products, setProducts] = useState([]);
+	const [all, setAll] = useState(0);
+	const [pizza, setPizza] = useState(0);
+	const [pasta, setPasta] = useState(0);
 
 	const [totalPages, setTotalPages] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -32,8 +32,8 @@ export default function ProductPage() {
 
 	const itemsPerPage = 3;
 
-	console.log(products);
-	console.log(totalPages);
+	// console.log(products);
+	// console.log(totalPages);
 
 	useEffect(() => {
 		fetchProduct(currentPage);
@@ -43,29 +43,40 @@ export default function ProductPage() {
 	async function fetchProduct(page, category, search = "") {
 		setCurrentPage(page);
 		setCategory(category);
-		// try {
-		const response = await api.get("/product", {
-			params: {
-				page,
-				limit: parseInt(itemsPerPage),
-				category_id: category,
-				search,
-			},
-		});
-		console.log(response.data);
-		const {
-			count: dataCount,
-			products: dataProducts,
-			totalPages: dataTotalPages,
-		} = response.data;
-		setTotalProduct(dataCount);
-		setProducts(dataProducts);
-		// alert(dataTotalPages);
-		setTotalPages(dataTotalPages);
-		// } catch (err) {
-		// console.log(err.message);
-		// }
+		try {
+			const response = await api.get("/products", {
+				params: {
+					page,
+					limit: parseInt(itemsPerPage),
+					category_id: category,
+					search,
+				},
+			});
+			console.log(response.data);
+			const {
+				products: dataProducts,
+				totalPages: dataTotalPages,
+				all,
+				pizza,
+				pasta,
+			} = response.data;
+			setAll(all);
+			setPizza(pizza);
+			setPasta(pasta);
+			setProducts(dataProducts);
+			setTotalPages(dataTotalPages);
+		} catch (err) {
+			console.log(err.message);
+		}
 	}
+
+	function handleDataChange() {
+		fetchProduct();
+	}
+
+	// const handlePageChange = (page) => {
+	//   setCurrentPage(page);
+	// };
 
 	const renderPagination = () => {
 		const pages = [];
@@ -88,7 +99,14 @@ export default function ProductPage() {
 		<>
 			<NavbarAdmin />
 			<SidebarAdmin />
-			<Box w={"100vw"} bg={"#EEF2F6"} h={"100vh"} pt={"88px"} pl={"200px"}>
+			<Box
+				id="/products"
+				w={"100vw"}
+				bg={"#EEF2F6"}
+				h={"100%"}
+				pt={"88px"}
+				pl={"200px"}
+			>
 				<Box w={"100%"} p={5}>
 					<Box mb={5} fontWeight={"bold"}>
 						PRODUCT
@@ -108,17 +126,26 @@ export default function ProductPage() {
 								color={"white"}
 							></IconButton>
 							<Button bg={"white"}>Product</Button>
-							<CreateProduct isOpen={isOpen} onClose={onClose} />
+							<CreateProduct
+								isOpen={isOpen}
+								onClose={onClose}
+								fetchProduct={fetchProduct}
+							/>
 						</ButtonGroup>
 					</Flex>
 
-					<Box bg={"white"} w={"100%"} borderRadius={5} p={3}>
-						<Tabs position="relative" variant="unstyled" maxW={"100%"}>
+					<Box bg={"white"} w={"100%"} borderRadius={5} p={3} minH={"500px"}>
+						<Tabs
+							position="relative"
+							variant="unstyled"
+							maxW={"100%"}
+							minH={"430px"}
+						>
 							<TabList>
-								<Tab onClick={() => fetchProduct(1)}>All </Tab>
-								<Tab onClick={() => fetchProduct(1, "1")}>Pizza</Tab>
-								<Tab onClick={() => fetchProduct(1, "2")}>Pasta</Tab>
-								<Tab>Drinks</Tab>
+								<Tab onClick={() => fetchProduct(1)}>All ({all}) </Tab>
+								<Tab onClick={() => fetchProduct(1, "1")}>Pizza ({pizza})</Tab>
+								<Tab onClick={() => fetchProduct(1, "2")}>Pasta ({pasta})</Tab>
+								<Tab onClick={() => fetchProduct(1, "3")}>Drinks</Tab>
 							</TabList>
 							<TabIndicator
 								mt="-1.5px"
@@ -128,13 +155,19 @@ export default function ProductPage() {
 							/>
 							<TabPanels>
 								<TabPanel id="all">
-									<AllProductList products={products} />
+									<ProductList
+										products={products}
+										fetchProduct={fetchProduct}
+									/>
 								</TabPanel>
 								<TabPanel id="pizza">
-									<AllProductList products={products} />
+									<ProductList products={products} />
 								</TabPanel>
 								<TabPanel id="pasta">
-									<AllProductList products={products} />
+									<ProductList products={products} />
+								</TabPanel>
+								<TabPanel id="drinks">
+									<ProductList products={products} />
 								</TabPanel>
 							</TabPanels>
 						</Tabs>
