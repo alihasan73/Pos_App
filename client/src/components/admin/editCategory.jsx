@@ -12,7 +12,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { api } from "../api/api";
+import { api } from "../../api/api";
 
 export function EditCategory(props) {
   const [category, setCategory] = useState({
@@ -32,7 +32,7 @@ export function EditCategory(props) {
     } else {
       await api.patch("/categories/" + props.id, category);
       alert("berhasil mengubah category");
-      props.onClose();
+      props.fetchCategories();
     }
   };
   return (
@@ -50,16 +50,18 @@ export function EditCategory(props) {
           <ModalBody>
             <Box>
               Name
-              <Input
-                id="name"
-                placeholder={props.name}
-                onChange={inputHandler}
-              />
+              <Input id="name" onChange={inputHandler} />
             </Box>
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost" onClick={editCategory}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                editCategory();
+                props.onClose();
+              }}
+            >
               Save
             </Button>
           </ModalFooter>

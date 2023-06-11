@@ -6,6 +6,7 @@ export default function ProtectedPage({
   children,
   adminOnly = false,
   cashierOnly = false,
+  guestOnly = false,
 }) {
   const userSelector = useSelector((state) => state.auth);
   const nav = useNavigate();
@@ -14,16 +15,24 @@ export default function ProtectedPage({
   console.log(userSelector);
   console.log(token);
   useEffect(() => {
-    if (adminOnly && token && userSelector.role == "ADMIN") {
-      //jika admin dan login ke dashboard admin
-      return nav("/dashboardAdmin");
-    } else if (cashierOnly && userSelector.role == "CASHIER") {
-      //jika  cashier dan login maka ke dashboard cashier
-      return nav("/dashboardCashier");
-    } else {
+    console.log(userSelector.role);
+
+    if (guestOnly && userSelector.role) {
+      if (userSelector.role == "ADMIN") {
+        return nav("/dashboardAdmin");
+      } else {
+        return nav("/dashboardCashier");
+      }
+    } else if (adminOnly && userSelector.role != "ADMIN") {
+      return nav("/login");
+    } else if (cashierOnly && userSelector.role != "CASHIER") {
       return nav("/login");
     }
   }, [userSelector, adminOnly, cashierOnly]);
 
   return children;
 }
+
+//admin product, category, adminsetting , dashboardadmin,
+//cashier dashboardcashier
+//guest login

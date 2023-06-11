@@ -1,24 +1,34 @@
 import { Route } from "react-router-dom";
 import ProtectedPage from "./protectedPage";
 import LoginPage from "../pages/loginPage";
-import TestPage from "../pages/testPage";
 import ProductPage from "../pages/ProductPage";
 import DashboardAdminPage from "../pages/dashboardAdminPage";
 import CategoryPage from "../pages/categoryPage";
 import AdminSettings from "../pages/adminSettings";
+import DashboardCashier from "../pages/dashboardCashier";
+import ReportPage from "../pages/reportPage";
+import Test from "../pages/categoryPage";
 
 const routes = [
   <Route
     path="/login"
     key={"loginPage"}
     element={
-      <ProtectedPage>
+      <ProtectedPage guestOnly={true}>
         <LoginPage />
       </ProtectedPage>
     }
   />,
 
-  <Route path="cashier" />,
+  <Route
+    path="dashboardCashier"
+    element={
+      <ProtectedPage cashierOnly={true}>
+        <DashboardCashier />
+      </ProtectedPage>
+    }
+  />,
+
   <Route
     path="/dashboardAdmin"
     element={
@@ -40,6 +50,7 @@ const routes = [
     element={
       <ProtectedPage adminOnly={true}>
         <CategoryPage />
+        {/* <Test /> */}
       </ProtectedPage>
     }
   />,
@@ -52,8 +63,21 @@ const routes = [
       </ProtectedPage>
     }
   />,
+  <Route
+    path="/report"
+    element={
+      <ProtectedPage adminOnly={true}>
+        <ReportPage />
+      </ProtectedPage>
+    }
+  />,
 
-  <Route path="/test" element={<TestPage />} />,
+  <Route
+    path="/*"
+    element={
+      <ProtectedPage guestOnly={true} adminOnly={true} cashierOnly={true} />
+    }
+  />,
 ];
 
 export default routes;
