@@ -11,14 +11,17 @@ import {
   Box,
   Flex,
 } from "@chakra-ui/react";
-import { api } from "../api/api";
+import { api } from "../../api/api";
+import { useEffect } from "react";
 
-export function DeleteCategory(props) {
-  const deleteCategory = async () => {
-    await api.delete("/categories/" + props.id);
-    alert("succes");
-    props.onClose();
+export function DeleteUser(props) {
+  //   console.log(props);
+  const deleteUser = async () => {
+    await api.delete("/users/" + props.id);
+    alert("deleted");
+    props.fetch();
   };
+
   return (
     <>
       <Modal onClose={props.onClose} size={"xs"} isOpen={props.isOpen}>
@@ -31,7 +34,14 @@ export function DeleteCategory(props) {
           </ModalBody>
           <ModalFooter gap={5}>
             <Button onClick={props.onClose}>Cancel</Button>
-            <Button onClick={deleteCategory}>Delete</Button>
+            <Button
+              onClick={() => {
+                deleteUser();
+                props.onClose();
+              }}
+            >
+              Delete
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

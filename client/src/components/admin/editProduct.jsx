@@ -14,9 +14,9 @@ import {
 	Input,
 	Select,
 } from "@chakra-ui/react";
-import iconphoto from "../assets/icon.png";
+import iconphoto from "../../assets/icon.png";
 import { useEffect, useRef, useState } from "react";
-import { api } from "../api/api";
+import { api } from "../../api/api";
 
 export function EditProduct(props) {
 	const [category, setCategory] = useState([]);
@@ -81,6 +81,13 @@ export function EditProduct(props) {
 			formData.append("category_id", product.category_id);
 
 			await api.patch("/products/" + props.id, formData);
+			//       alert("berhasil mengubah produk");
+			//       props.fetch();
+			//     }
+			//     // } catch (err) {
+			//     //   console.log(err.message);
+			//     // }
+			//   };
 
 			alert("berhasil mengubah produk");
 			props.fetchProduct();
@@ -176,4 +183,19 @@ export function EditProduct(props) {
 			</Modal>
 		</>
 	);
+	//           <ModalFooter>
+	//             <Button
+	//               variant="ghost"
+	//               onClick={() => {
+	//                 editProduct();
+	//                 props.onClose();
+	//               }}
+	//             >
+	//               Save
+	//             </Button>
+	//           </ModalFooter>
+	//         </ModalContent>
+	//       </Modal>
+	//     </>
+	//   );
 }

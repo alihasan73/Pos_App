@@ -1,10 +1,12 @@
 const userRoutes = require("./user");
 const productRoutes = require("./product");
 const categoryRoutes = require("./category");
-const casherRoutes = require("./casher");
+const orderRoutes = require("./order");
+const orderDetailRoutes = require("./orderDetail");
 module.exports = {
 	userRoutes,
 	productRoutes,
 	categoryRoutes,
-	casherRoutes,
+	orderRoutes,
+	orderDetailRoutes,
 };
