@@ -3,9 +3,8 @@ import { Text } from "@chakra-ui/react";
 import { Divider } from "@chakra-ui/react";
 import { Flex, Badge } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-// import { Text } from "@chakra-ui/react";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import { api } from "../api/api";
+import { api } from "../../api/api";
 import { useSelector } from "react-redux";
 import moment from "moment";
 export function OrderDetailHistori() {
@@ -26,7 +25,7 @@ export function OrderDetailHistori() {
 	console.log(data);
 	return (
 		<>
-			<Flex flexDirection={"column"} w={"72%"} p={"10"}>
+			<Flex flexDirection={"column"} w={"72%"} p={"10"} mt={"75px"}>
 				<Box mb={"20px"}>
 					{data != null ? (
 						<>

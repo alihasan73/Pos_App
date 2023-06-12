@@ -54,6 +54,8 @@ db.StockHistory = require("./stockHistory")(sequelize, Sequelize);
 db.Product = require("./product")(sequelize, Sequelize);
 db.Order = require("./order")(sequelize, Sequelize);
 db.OrderDetails = require("./orderDetails")(sequelize, Sequelize);
+db.Transaction = require("./transaction")(sequelize, Sequelize);
+db.TransactionDetail = require("./transactionDetail")(sequelize, Sequelize);
 
 db.Product.belongsTo(db.Category, {
 	foreignKey: "category_id",
@@ -68,6 +70,15 @@ db.Order.belongsTo(db.User, {
 	foreignKey: "user_id",
 });
 db.StockHistory.belongsTo(db.Product, {
+	foreignKey: "product_id",
+});
+db.Transaction.hasMany(db.TransactionDetail, {
+	foreignKey: "transaction_id",
+});
+db.TransactionDetail.belongsTo(db.Transaction, {
+	foreignKey: "transaction_id",
+});
+db.TransactionDetail.belongsTo(db.Product, {
 	foreignKey: "product_id",
 });
 

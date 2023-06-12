@@ -9,6 +9,7 @@ import AdminSettings from "../pages/adminSettings";
 import DashboardCashier from "../pages/dashboardCashier";
 import ReportPage from "../pages/reportPage";
 import Test from "../pages/categoryPage";
+import CasherHistory from "../pages/casherHistory";
 
 const routes = [
 	<Route
@@ -26,6 +27,14 @@ const routes = [
 		element={
 			<ProtectedPage cashierOnly={true}>
 				<DashboardCashier />
+			</ProtectedPage>
+		}
+	/>,
+	<Route
+		path="/historyCashier"
+		element={
+			<ProtectedPage cashierOnly={true}>
+				<CasherHistory />
 			</ProtectedPage>
 		}
 	/>,

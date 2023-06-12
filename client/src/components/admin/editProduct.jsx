@@ -19,28 +19,18 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "../../api/api";
 
 export function EditProduct(props) {
+	// console.log(props);
 	const [category, setCategory] = useState([]);
 	const [SelectedFile, setSelectedFile] = useState(null);
 	const inputFileRef = useRef(null);
-	// const [product, setProduct] = useState({
-	// 	name: "",
-	// 	description: "",
-	// 	price: "",
-	// 	category_id: "",
-	// });
-	const [product, setProduct] = useState({});
+	const [product, setProduct] = useState({
+		name: "",
+		description: "",
+		price: "",
+		category_id: "",
+	});
 	const [image, setImage] = useState(iconphoto);
 
-	const getData = async () => {
-		const result = await api.get(`/products/${props.id}`);
-		console.log(result.data);
-		setProduct(result.data);
-	};
-
-	useEffect(() => {
-		getData();
-	}, [props.isOpen]);
-	// console.log(product.name);
 	const inputHandler = (e) => {
 		const { id, value } = e.target;
 		const tempProduct = { ...product };
@@ -53,6 +43,7 @@ export function EditProduct(props) {
 	useEffect(() => {
 		async function getCategory() {
 			const response = await api.get("/categories");
+			// console.log(res.data);
 			const { category } = response.data;
 			setCategory(category);
 		}
@@ -81,18 +72,13 @@ export function EditProduct(props) {
 			formData.append("category_id", product.category_id);
 
 			await api.patch("/products/" + props.id, formData);
-			//       alert("berhasil mengubah produk");
-			//       props.fetch();
-			//     }
-			//     // } catch (err) {
-			//     //   console.log(err.message);
-			//     // }
-			//   };
 
 			alert("berhasil mengubah produk");
-			props.fetchProduct();
-			props.onClose();
+			props.fetch();
 		}
+		// } catch (err) {
+		//   console.log(err.message);
+		// }
 	};
 
 	const handleFile = (event) => {
@@ -136,15 +122,13 @@ export function EditProduct(props) {
 								Product Name
 								<Input
 									id="name"
-									// placeholder={props.name}
-									value={product.name}
+									placeholder={props.name}
 									onChange={inputHandler}
 								/>
 								Price
 								<Input
 									id="price"
-									// placeholder={props.price}
-									value={product.price}
+									placeholder={props.price}
 									onChange={inputHandler}
 								/>
 							</Flex>
@@ -153,15 +137,13 @@ export function EditProduct(props) {
 							Description
 							<Input
 								id="description"
-								// placeholder={props.description}
-								value={product.description}
+								placeholder={props.description}
 								onChange={inputHandler}
 							/>
 						</Box>
 						<Box pt={5}>
 							<Select
-								// placeholder={props.category_id}
-								value={product.category_id}
+								placeholder={props.category_id}
 								id="category_id"
 								onChange={inputHandler}
 							>
@@ -175,7 +157,13 @@ export function EditProduct(props) {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button variant="ghost" onClick={editProduct}>
+						<Button
+							variant="ghost"
+							onClick={() => {
+								editProduct();
+								props.onClose();
+							}}
+						>
 							Save
 						</Button>
 					</ModalFooter>
@@ -183,19 +171,4 @@ export function EditProduct(props) {
 			</Modal>
 		</>
 	);
-	//           <ModalFooter>
-	//             <Button
-	//               variant="ghost"
-	//               onClick={() => {
-	//                 editProduct();
-	//                 props.onClose();
-	//               }}
-	//             >
-	//               Save
-	//             </Button>
-	//           </ModalFooter>
-	//         </ModalContent>
-	//       </Modal>
-	//     </>
-	//   );
 }

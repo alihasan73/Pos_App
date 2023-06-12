@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { Flex, Spacer } from "@chakra-ui/react";
 import { Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { api } from "../api/api";
+import { api } from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
@@ -43,22 +43,15 @@ export default function TimeHistory() {
 	}
 	function calculateTimeDifference(createdAt) {
 		const now = moment().utc().local();
-		// console.log(now);
 		const diff = moment.duration(now.diff(createdAt));
-		// console.log(diff);
-
-		// const hoursDiff = diff.asHours();
 		const minutesDiff = diff.asHours();
-		// const secondsDiff = diff.asSeconds();
-
-		// return [hoursDiff, minutesDiff, secondsDiff];
 		return minutesDiff;
 	}
 
 	return (
 		<>
-			<Box w={"20%"} h={"100vh"} overflowY="auto">
-				<Flex flexDirection={"column"} ml={"1px"}>
+			<Box w={"20%"} h={"100vh"} overflowY="auto" ml={"112px"} mt={"75px"}>
+				<Flex flexDirection={"column"}>
 					{data.map((val) => (
 						<Box key={val.id} onClick={() => handleClick(val.id)}>
 							<Flex
@@ -71,7 +64,8 @@ export default function TimeHistory() {
 							>
 								<Text fontSize="2xl" marginLeft="auto" mr={5} color="#364152">
 									{/* (`{const cal = val.createdAt;}`) */}
-									{calculateTimeDifference(val.createdAt)}
+									{/* {calculateTimeDifference(val.createdAt)} */}
+									{moment(val.createdAt).format("l")}
 									{/* {moment.duration(now.diff(val.createdAt)).asMinutes()} */}
 								</Text>
 								<Text fontSize="2xl" marginLeft="auto" mr={5} color="#16B364">

@@ -59,6 +59,7 @@ export default function ProductPage() {
 		});
 		const data = response.data;
 		setProduct(data);
+		// console.log(data);
 	}
 
 	//
