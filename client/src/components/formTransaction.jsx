@@ -93,7 +93,7 @@ export default function Formtransaction() {
 					</Flex>
 				</Box>
 				<Box>
-					<Flex justify={"space-evenly"}>
+					<Flex justify={"space-around"}>
 						<Badge
 							bg={"red.100"}
 							color={"red.400"}

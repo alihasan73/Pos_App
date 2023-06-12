@@ -55,9 +55,53 @@ db.Product = require("./product")(sequelize, Sequelize);
 db.Stock = require("./stock")(sequelize, Sequelize);
 db.Transaction = require("./transaction")(sequelize, Sequelize);
 db.TransactionDetail = require("./transactionDetail")(sequelize, Sequelize);
+// db.ProductTransactionDetail = require("./productTransactionDetail")(
+// 	sequelize,
+// 	Sequelize
+// );
 
 db.Product.belongsTo(db.Category, {
 	foreignKey: "category_id",
 });
+// //
+db.Transaction.hasMany(db.TransactionDetail, {
+	foreignKey: "transaction_id",
+});
+db.TransactionDetail.belongsTo(db.Transaction, {
+	foreignKey: "transaction_id",
+});
+// db.Product.hasOne(db.TransactionDetail, {
+// 	foreignKey: "product_id",
+// });
+db.TransactionDetail.belongsTo(db.Product, {
+	foreignKey: "product_id",
+});
+// db.TransactionDetail.hasMany(db.ProductTransactionDetail, {
+// 	foreignKey: "transactiondetail_id",
+// });
+
+// db.ProductTransactionDetail.belongsTo(db.TransactionDetail, {
+// 	foreignKey: "transactiondetail_id",
+// });
+// db.Product.hasMany(db.ProductTransactionDetail, {
+// 	foreignKey: "product_id",
+// });
+// db.ProductTransactionDetail.belongsTo(db.Product, {
+// 	foreignKey: "product_id",
+// });
+
+// db.TransactionDetail.hasMany(db.ProductTransactionDetail, {
+// 	foreignKey: "transactiondetail_id",
+// });
+// db.ProductTransactionDetail.belongsTo(db.TransactionDetail, {
+// 	foreignKey: "transactiondetail_id",
+// });
+
+// db.TransactionDetail.belongsToMany(db.Product, {
+// 	through: db.ProductTransactionDetail,
+// });
+// db.Product.belongsToMany(db.TransactionDetail, {
+// 	through: db.ProductTransactionDetail,
+// });
 
 module.exports = db;

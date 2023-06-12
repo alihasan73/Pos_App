@@ -8,6 +8,7 @@ const db = require("./models");
 const routes = require("./routes");
 
 // db.sequelize.sync({ alter: true });
+
 // db.sequelize.sync({ force: true });
 // db.sequelize.drop();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => res.send("test"));
 app.use("/users", routes.userRoutes);
 app.use("/products", routes.productRoutes);
 app.use("/categories", routes.categoryRoutes);
+app.use("/casher", routes.casherRoutes);
 app.use("/imageProduct", express.static(`${__dirname}/public/product`));
 app.use("/avatarUser", express.static(`${__dirname}/public/avatar`));
 

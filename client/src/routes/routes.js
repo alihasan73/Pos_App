@@ -7,6 +7,7 @@ import DashboardAdminPage from "../pages/dashboardAdminPage";
 import CategoryPage from "../pages/categoryPage";
 import DashbordCasher from "../pages/dashboardCasherPage";
 import AdminSettings from "../pages/adminSettings";
+import CasherHistory from "../pages/casherHistory";
 
 const routes = [
 	<Route
@@ -56,6 +57,7 @@ const routes = [
 
 	<Route path="/test" element={<TestPage />} />,
 	<Route path="/casher" element={<DashbordCasher />} />,
+	<Route path="/casherHistory" element={<CasherHistory />} />,
 ];
 
 export default routes;
