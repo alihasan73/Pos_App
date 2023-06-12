@@ -1,9 +1,24 @@
 import { Avatar, Box, Center, Flex, Input } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 export default function NavbarAdmin() {
   const userSelector = useSelector((state) => state.auth);
-  console.log(userSelector);
+  // console.log(userSelector);
+
+  const LiveJam = () => {
+    const [time, setTime] = useState(moment().format("hh:mm:ss"));
+
+    useEffect(() => {
+      setTimeout(() => {
+        setTime(moment().format("hh:mm:ss"));
+      }, 1000);
+    }, [time]);
+
+    return <>{moment().format("DD MMMM, hh:mm:ss a")}</>;
+  };
+
   return (
     <>
       <Center position={"fixed"} zIndex={2}>
@@ -22,12 +37,15 @@ export default function NavbarAdmin() {
             m={"17px 15px"}
             // bg={"white"}
           >
-            <Box w={"385px"}>
-              <Input
-                variant={"filled"}
-                placeholder="Search document or Product"
-                w={"80%"}
-              />
+            <Box
+              color={"white"}
+              fontSize={"20px"}
+              fontWeight={"bold"}
+              bg={"#B42318"}
+              p={2}
+              borderRadius={5}
+            >
+              {LiveJam()}
             </Box>
             <Flex gap={3} alignItems={"center"}>
               <Box flexDir={"column"} fontSize={"sm"}>

@@ -15,7 +15,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { api } from "../api/api";
+import { api } from "../../api/api";
 
 export function CreateCategory(props) {
   const [category, setCategory] = useState({
@@ -35,8 +35,8 @@ export function CreateCategory(props) {
       alert("isi semua");
     } else {
       await api.post("/categories", category);
+      props.fetchCategories();
       alert("berhasil menambahkan category");
-      props.onClose();
     }
   };
 
@@ -55,16 +55,18 @@ export function CreateCategory(props) {
           <ModalBody>
             <Box>
               Name
-              <Input
-                id="name"
-                placeholder={props.name}
-                onChange={inputHandler}
-              />
+              <Input id="name" onChange={inputHandler} />
             </Box>
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost" onClick={newCategory}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                newCategory();
+                props.onClose();
+              }}
+            >
               Save
             </Button>
           </ModalFooter>
