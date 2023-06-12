@@ -1,85 +1,94 @@
 const db = require("../models");
 const productImage = process.env.IMAGE_PROD_URL;
-console.log(productImage);
+
 const productController = {
-	getAllProduct: async (req, res) => {
-		try {
-			const { search, sortby, sortdir } = req.query;
-			const order = [];
-			if (sortby && sortdir) {
-				order.push([sortby, sortdir]);
-			}
+  getAllProduct: async (req, res) => {
+    try {
+      const { search, sortby, sortdir } = req.query;
+      const order = [];
+      if (sortby && sortdir) {
+        order.push([sortby, sortdir]);
+      }
 
-			await db.Product.findAll({
-				include: [
-					{
-						model: db.Category,
-						attributes: ["name"],
-					},
-				],
-				order,
-				where: {
-					name: {
-						[db.Sequelize.Op.like]: `%${search ? search : ""}%`,
-					},
-				},
-			}).then((result) => res.send(result));
-		} catch (err) {
-			console.log(err.message);
-			return res.status(500).send(err.message);
-		}
-	},
-	createNewProduct: async (req, res) => {
-		try {
-			const { name, price, description, category_id } = req.body;
-			const { filename } = req.file;
-			const pr = await db.Product.create({
-				name,
-				price,
-				description,
-				category_id,
-				product_url: productImage + filename,
-				status: "AVAILABLE",
-			});
+      await db.Product.findAll({
+        include: [
+          {
+            model: db.Category,
+            attributes: ["name"],
+          },
+        ],
+        order,
+        where: {
+          name: {
+            [db.Sequelize.Op.like]: `%${search ? search : ""}%`,
+          },
+        },
+      }).then((result) => res.send(result));
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send(err.message);
+    }
+  },
+  createNewProduct: async (req, res) => {
+    try {
+      const { name, price, description, category_id } = req.body;
+      const { filename } = req.file;
+      await db.Product.create({
+        name,
+        price,
+        description,
+        category_id,
+        product_url: productImage + filename,
+        status: "AVAILABLE",
+      });
 
-			return res.send({ message: "success added new product" });
-		} catch (err) {
-			console.log(err.message);
-			return res.status(500).send(err.message);
-		}
-	},
-	editProduct: async (req, res) => {
-		try {
-			const { name, price, description, category_id } = req.body;
-			const { filename } = req.file;
-			await db.Product.update(
-				{
-					name,
-					price,
-					description,
-					category_id,
-					product_url: productImage + filename,
-				},
-				{
-					where: {
-						id: req.params.id,
-					},
-				}
-			).then((result) => res.send(result));
-			// return res.send({ message: "edit berhasil" });
-		} catch (err) {
-			console.log(err.message);
-			return res.status(500).send({ message: err.message });
-		}
-	},
-	deleteProduct: async (req, res) => {
-		await db.Product.destroy({
-			where: {
-				id: req.params.id,
-			},
-		});
-		return res.send({ message: "success deleted" });
-	},
+      return res.send({ message: "success added new product" });
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send(err.message);
+    }
+  },
+  editProduct: async (req, res) => {
+    try {
+      const { name, price, description, category_id } = req.body;
+      const { filename } = req.file;
+      await db.Product.update(
+        {
+          name,
+          price,
+          description,
+          category_id,
+          product_url: productImage + filename,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      ).then((result) => res.send(result));
+      // return res.send({ message: "edit berhasil" });
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send({ message: err.message });
+    }
+  },
+  deleteProduct: async (req, res) => {
+    await db.Product.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    return res.send({ message: "success deleted" });
+  },
+  getProductByCategory: async (req, res) => {
+    const { category_id } = req.query;
+    await db.Product.findAll({
+      category_id,
+      where: {
+        category_id: category_id,
+      },
+    }).then((result) => res.send(result));
+  },
 };
 
 module.exports = productController;
