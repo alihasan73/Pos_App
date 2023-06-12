@@ -1,92 +1,47 @@
 const db = require("../models");
-<<<<<<< Updated upstream
 const productImage = process.env.IMAGE_PROD_URL;
-console.log(productImage);
-=======
-const productImage = process.env.productImage;
 
->>>>>>> Stashed changes
 const productController = {
-	getAllProduct: async (req, res) => {
-		try {
-			const { search, sortby, sortdir } = req.query;
-			const order = [];
-			if (sortby && sortdir) {
-				order.push([sortby, sortdir]);
-			}
+  getAllProduct: async (req, res) => {
+    try {
+      const { search, sortby, sortdir } = req.query;
+      const order = [];
+      if (sortby && sortdir) {
+        order.push([sortby, sortdir]);
+      }
 
-			await db.Product.findAll({
-				include: [
-					{
-						model: db.Category,
-						attributes: ["name"],
-					},
-				],
-				order,
-				where: {
-					name: {
-						[db.Sequelize.Op.like]: `%${search ? search : ""}%`,
-					},
-				},
-			}).then((result) => res.send(result));
-		} catch (err) {
-			console.log(err.message);
-			return res.status(500).send(err.message);
-		}
-	},
-	createNewProduct: async (req, res) => {
-		try {
-			const { name, price, description, category_id } = req.body;
-			const { filename } = req.file;
-			const pr = await db.Product.create({
-				name,
-				price,
-				description,
-				category_id,
-				product_url: productImage + filename,
-				status: "AVAILABLE",
-			});
+      await db.Product.findAll({
+        include: [
+          {
+            model: db.Category,
+            attributes: ["name"],
+          },
+        ],
+        order,
+        where: {
+          name: {
+            [db.Sequelize.Op.like]: `%${search ? search : ""}%`,
+          },
+        },
+      }).then((result) => res.send(result));
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).send(err.message);
+    }
+  },
+  createNewProduct: async (req, res) => {
+    try {
+      const { name, price, description, category_id } = req.body;
+      const { filename } = req.file;
+      await db.Product.create({
+        name,
+        price,
+        description,
+        category_id,
+        product_url: productImage + filename,
+        status: "AVAILABLE",
+      });
 
-<<<<<<< Updated upstream
-			return res.send({ message: "success added new product" });
-		} catch (err) {
-			console.log(err.message);
-			return res.status(500).send(err.message);
-		}
-	},
-	editProduct: async (req, res) => {
-		try {
-			const { name, price, description, category_id } = req.body;
-			const { filename } = req.file;
-			await db.Product.update(
-				{
-					name,
-					price,
-					description,
-					category_id,
-					product_url: productImage + filename,
-				},
-				{
-					where: {
-						id: req.params.id,
-					},
-				}
-			).then((result) => res.send(result));
-			// return res.send({ message: "edit berhasil" });
-		} catch (err) {
-			console.log(err.message);
-			return res.status(500).send({ message: err.message });
-		}
-	},
-	deleteProduct: async (req, res) => {
-		await db.Product.destroy({
-			where: {
-				id: req.params.id,
-			},
-		});
-		return res.send({ message: "success deleted" });
-	},
-=======
       return res.send({ message: "success added new product" });
     } catch (err) {
       console.log(err.message);
@@ -134,7 +89,6 @@ const productController = {
       },
     }).then((result) => res.send(result));
   },
->>>>>>> Stashed changes
 };
 
 module.exports = productController;
